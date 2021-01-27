@@ -1,0 +1,11 @@
+{
+  "/polls/*": {
+    "target": "http://47.103.210.109:8000",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true,
+    "pathRewrite": {
+      "^/": ""
+    }
+  }
+}

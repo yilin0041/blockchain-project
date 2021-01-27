@@ -1,0 +1,38 @@
+<body>
+  <div class="mainContainer">
+    <div class="formContainer">
+      <h1>区块链金融系统</h1>
+      <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+        <nz-form-item>
+          <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="username" nzRequired>
+            <span>Username</span>
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Username is required!">
+            <input nz-input id="username" formControlName="username" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="password" nzRequired>
+            <span>Password</span>
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Password is required!">
+            <input nz-input type="password" id="password" formControlName="password" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="type" nzRequired>
+            <span>Type</span>
+          </nz-form-label>
+          <nz-form-control nzErrorTip="Type is required!">
+            <nz-select [(ngModel)]="accountType" [ngModelOptions]="{standalone: true}">
+              <nz-option nzValue="company" nzLabel="企业"></nz-option>
+              <nz-option nzValue="bank" nzLabel="银行"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <button nz-button class="login-form-button login-form-margin" nzType="primary" [nzLoading]="loading">Create account</button>
+            <a routerLink="/login">Already have an account? </a>
+      </form>
+    </div>
+  </div>
+</body>

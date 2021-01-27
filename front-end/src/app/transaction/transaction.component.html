@@ -1,0 +1,58 @@
+<nz-spin [nzSpinning]="isSpinning" [nzTip]="'加载中...'">
+  <nz-table
+    #dynamicTable
+    [nzScroll]="{ x: scrollX, y: scrollY }"
+    [nzData]="listOfData"
+    [nzTableLayout]="settingValue.tableLayout"
+    [nzBordered]="settingValue.bordered"
+    [nzSimple]="settingValue.simple"
+    [nzLoading]="settingValue.loading"
+    [nzPaginationPosition]="settingValue.position"
+    [nzFrontPagination]="settingValue.pagination"
+    [nzShowPagination]="settingValue.pagination"
+    [nzTitle]="settingValue.title ? 'Here is Title' : null"
+    [nzSize]="settingValue.size"
+    (nzCurrentPageDataChange)="currentPageDataChange($event)"
+  >
+    <thead>
+      <tr *ngIf="settingValue.header">
+        <th [nzLeft]="fixedColumn" [nzAlign]="'center'">付款方</th>
+        <th [nzLeft]="fixedColumn" [nzAlign]="'center'">收款方</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="itemSort.compare"
+        [nzSortPriority]="itemSort.priority"
+        [nzSortOrder]="itemSort.sortOrder">交易物品</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="amountSort.compare"
+        [nzSortPriority]="amountSort.priority"
+        [nzSortOrder]="amountSort.sortOrder">交易数额</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="statusSort.compare"
+        [nzSortPriority]="statusSort.priority"
+        [nzSortOrder]="statusSort.sortOrder">账款状态</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="confirmSort.compare"
+        [nzSortPriority]="confirmSort.priority"
+        [nzSortOrder]="confirmSort.sortOrder">已认证</th>
+        <th [nzRight]="fixedColumn" [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of dynamicTable.data">
+        <tr>
+          <td [nzLeft]="fixedColumn" [nzAlign]="'center'">{{ data.payer }}</td>
+          <td [nzAlign]="'center'">{{ data.reciever }}</td>
+          <td [nzAlign]="'center'">{{ data.item }}</td>
+          <td [nzAlign]="'center'">{{ data.amount }}</td>
+          <td [nzAlign]="'center'">{{ data.status }}</td>
+          <td [nzAlign]="'center'">{{ data.certificated }}</td>
+          <td [nzRight]="fixedColumn" [nzEllipsis]="settingValue.ellipsis" [nzAlign]="'center'">
+            <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
+            <nz-spin nzSimple [nzIndicator]="indicatorTemplate" *ngIf="loading"> </nz-spin>
+            <span class="confirm" (click)="confirm(data.id)" *ngIf="data.certificated=='否' && !loading">验证</span>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</nz-spin>

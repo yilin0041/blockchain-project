@@ -1,0 +1,25 @@
+<nz-spin [nzSpinning]="isSpinning" [nzTip]="'加载中...'">
+  <div class="mainContainer">
+    <div class="itemContainer">
+      <nz-row [nzGutter]="16">
+        <nz-col [nzSpan]="12">
+          <nz-statistic [nzValue]="this.username" [nzTitle]="'用户名'"></nz-statistic>
+        </nz-col>
+      </nz-row>
+    </div>
+    <div class="itemContainer">
+      <nz-row [nzGutter]="16">
+        <nz-col [nzSpan]="12">
+          <nz-statistic [nzValue]="(this.balance | number)!" [nzTitle]="'余额'"></nz-statistic>
+        </nz-col>
+      </nz-row>
+    </div>
+    <div class="itemContainer">
+      <nz-row [nzGutter]="16">
+        <nz-col [nzSpan]="12">
+          <nz-statistic [nzValue]="this.address" [nzTitle]="'交易地址'"></nz-statistic>
+        </nz-col>
+      </nz-row>
+    </div>
+  </div>
+</nz-spin>

@@ -1,0 +1,62 @@
+<nz-layout class="app-layout" nzTheme="light">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzTheme="light"
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a href="#" target="_blank">
+        <img src="../../assets/logo.png" alt="logo">
+        <h1>区块链金融系统</h1>
+      </a>
+    </div>
+    <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzOpen nzTitle="账户管理" nzIcon="idcard">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/user">账户信息</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzOpen nzTitle="资产管理" nzIcon="pay-circle">
+        <ul>
+          <li nz-menu-item nzMatchRouter *ngIf="type=='core'">
+            <a routerLink="/payable">应付账款</a>
+          </li>
+          <li nz-menu-item nzMatchRouter *ngIf="type=='company'">
+            <a routerLink="/recievable">应收账款</a>
+          </li>
+          <li nz-menu-item nzMatchRouter *ngIf="type=='bank'">
+            <a routerLink="/transaction">交易/单据</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></i>
+        </span>
+        <div class="account">
+          <img src="../../assets/user.png" height="15%" width="15%" alt="profile">
+          <span>{{ this.username }}</span>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <app-user *ngIf="currentPath=='user'"></app-user>
+        <app-payable *ngIf="currentPath=='payable' && type=='core'"></app-payable>
+        <app-recievable *ngIf="currentPath=='recievable' && type=='company'"></app-recievable>
+        <app-transaction *ngIf="currentPath=='transaction' && type=='bank'"></app-transaction>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

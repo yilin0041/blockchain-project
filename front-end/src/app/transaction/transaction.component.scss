@@ -1,0 +1,15 @@
+
+form nz-form-item {
+  margin-right: 16px;
+  margin-bottom: 8px;
+}
+
+.confirm {
+  color: #009b6a;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+:host ::ng-deep .ant-table-thead > tr > th {
+  font-weight: 600;
+}

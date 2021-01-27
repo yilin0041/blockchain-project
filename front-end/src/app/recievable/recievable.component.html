@@ -1,0 +1,120 @@
+<button nz-button [nzType]="'primary'" class="financing" (click)="showFinancingModal()">融资</button>
+<button nz-button [nzType]="'primary'" class="transfer" (click)="showTransferModal()">转让</button>
+<nz-spin [nzSpinning]="isSpinning" [nzTip]="'加载中...'">
+  <nz-table
+    class="table"
+    #dynamicTable
+    [nzScroll]="{ x: scrollX, y: scrollY }"
+    [nzData]="listOfData"
+    [nzTableLayout]="settingValue.tableLayout"
+    [nzBordered]="settingValue.bordered"
+    [nzSimple]="settingValue.simple"
+    [nzLoading]="settingValue.loading"
+    [nzPaginationPosition]="settingValue.position"
+    [nzFrontPagination]="settingValue.pagination"
+    [nzShowPagination]="settingValue.pagination"
+    [nzTitle]="settingValue.title ? 'Here is Title' : null"
+    [nzSize]="settingValue.size"
+    (nzCurrentPageDataChange)="currentPageDataChange($event)"
+  >
+    <thead>
+      <tr *ngIf="settingValue.header">
+        <th [nzLeft]="fixedColumn" [nzAlign]="'center'">付款方</th>
+        <th [nzLeft]="fixedColumn" [nzAlign]="'center'">收款方</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="itemSort.compare"
+        [nzSortPriority]="itemSort.priority"
+        [nzSortOrder]="itemSort.sortOrder">交易物品</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="amountSort.compare"
+        [nzSortPriority]="amountSort.priority"
+        [nzSortOrder]="amountSort.sortOrder">交易数额</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="statusSort.compare"
+        [nzSortPriority]="statusSort.priority"
+        [nzSortOrder]="statusSort.sortOrder">账款状态</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="confirmSort.compare"
+        [nzSortPriority]="confirmSort.priority"
+        [nzSortOrder]="confirmSort.sortOrder">已认证</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of dynamicTable.data">
+        <tr>
+          <td [nzLeft]="fixedColumn" [nzAlign]="'center'">{{ data.payer }}</td>
+          <td [nzAlign]="'center'">{{ data.reciever }}</td>
+          <td [nzAlign]="'center'">{{ data.item }}</td>
+          <td [nzAlign]="'center'">{{ data.amount }}</td>
+          <td [nzAlign]="'center'">{{ data.status }}</td>
+          <td [nzAlign]="'center'">{{ data.certificated }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</nz-spin>
+
+<nz-modal
+  [(nzVisible)]="isFinancingVisible"
+  nzTitle="融资"
+  nzOkText="Confirm"
+  nzCancelText="Cancel"
+  (nzOnCancel)="handleFinancingCancel()"
+  (nzOnOk)="handleFinancingOk()"
+  [nzOkLoading]="isFinancingOkLoading"
+>
+  <form nz-form [formGroup]="fForm" nzLayout="vertical">
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="newReciever" nzRequired>
+        <span>融资对象：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Reciever is required">
+        <input nz-input id="newReciever" formControlName="newReciever" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="amount" nzRequired>
+        <span>融资数额：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Amount is required">
+        <input nz-input id="amount" formControlName="amount" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+<nz-modal
+  [(nzVisible)]="isTransferVisible"
+  nzTitle="转让"
+  nzOkText="Confirm"
+  nzCancelText="Cancel"
+  (nzOnCancel)="handleTransferCancel()"
+  (nzOnOk)="handleTransferOk()"
+  [nzOkLoading]="isTransferOkLoading"
+>
+  <form nz-form [formGroup]="tForm" nzLayout="vertical">
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="newReciever" nzRequired>
+        <span>转让对象：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Reciever is required">
+        <input nz-input id="newReciever" formControlName="newReciever" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="item" nzRequired>
+        <span>转让物品：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Item is required">
+        <input nz-input id="item" formControlName="item" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="amount" nzRequired>
+        <span>转让数额：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Amount is required">
+        <input nz-input id="amount" formControlName="amount" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

@@ -1,0 +1,20 @@
+
+form nz-form-item {
+  margin-right: 16px;
+  margin-bottom: 8px;
+}
+
+.create {
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.pay {
+  color: #009b6a;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+:host ::ng-deep .ant-table-thead > tr > th {
+  font-weight: 600;
+}

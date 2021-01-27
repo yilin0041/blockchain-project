@@ -1,0 +1,13 @@
+.mainContainer {
+  border-radius: 16px;
+  box-sizing: border-box;
+  box-shadow: 2px 2px #c4c4c4;
+  border: 1px solid #d1d1d1;
+  .itemContainer {
+    margin: 36px;
+  }
+}
+
+:host ::ng-deep .ant-descriptions-bordered .ant-descriptions-view > table {
+  table-layout: fixed;
+}

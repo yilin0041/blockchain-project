@@ -1,0 +1,22 @@
+
+form nz-form-item {
+  margin-right: 16px;
+  margin-bottom: 8px;
+}
+
+.table {
+  margin-top: 24px;
+}
+
+.financing {
+  font-weight: 600;
+}
+
+.transfer {
+  margin-left: 24px;
+  font-weight: 600;
+}
+
+:host ::ng-deep .ant-table-thead > tr > th {
+  font-weight: 600;
+}

@@ -1,0 +1,94 @@
+<button nz-button [nzType]="'primary'" class="create" (click)="showCreateModal()">签发单据</button>
+<nz-modal
+  [(nzVisible)]="isCreateVisible"
+  nzTitle="签发收据"
+  nzOkText="Confirm"
+  nzCancelText="Cancel"
+  (nzOnCancel)="handleCreateCancel()"
+  (nzOnOk)="handleCreateOk()"
+  [nzOkLoading]="isCreateOkLoading"
+>
+  <form nz-form [formGroup]="validateForm" nzLayout="vertical">
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="reciever" nzRequired>
+        <span>收款方：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Reciever is required">
+        <input nz-input id="reciever" formControlName="reciever" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="item" nzRequired>
+        <span>交易物品：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Item name is required">
+        <input nz-input id="item" formControlName="item" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="amount" nzRequired>
+        <span>交易数额：</span>
+      </nz-form-label>
+      <nz-form-control nzErrorTip="Amount is required">
+        <input nz-input id="amount" formControlName="amount" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+<nz-spin [nzSpinning]="isSpinning" [nzTip]="'加载中...'">
+  <nz-table
+    #dynamicTable
+    [nzScroll]="{ x: scrollX, y: scrollY }"
+    [nzData]="listOfData"
+    [nzTableLayout]="settingValue.tableLayout"
+    [nzBordered]="settingValue.bordered"
+    [nzSimple]="settingValue.simple"
+    [nzLoading]="settingValue.loading"
+    [nzPaginationPosition]="settingValue.position"
+    [nzFrontPagination]="settingValue.pagination"
+    [nzShowPagination]="settingValue.pagination"
+    [nzTitle]="settingValue.title ? 'Here is Title' : null"
+    [nzSize]="settingValue.size"
+    (nzCurrentPageDataChange)="currentPageDataChange($event)"
+  >
+    <thead>
+      <tr *ngIf="settingValue.header">
+        <th [nzLeft]="fixedColumn" [nzAlign]="'center'">付款方</th>
+        <th [nzLeft]="fixedColumn" [nzAlign]="'center'">收款方</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="itemSort.compare"
+        [nzSortPriority]="itemSort.priority"
+        [nzSortOrder]="itemSort.sortOrder">交易物品</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="amountSort.compare"
+        [nzSortPriority]="amountSort.priority"
+        [nzSortOrder]="amountSort.sortOrder">交易数额</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="statusSort.compare"
+        [nzSortPriority]="statusSort.priority"
+        [nzSortOrder]="statusSort.sortOrder">账款状态</th>
+        <th [nzAlign]="'center'"
+        [nzSortFn]="confirmSort.compare"
+        [nzSortPriority]="confirmSort.priority"
+        [nzSortOrder]="confirmSort.sortOrder">已认证</th>
+        <th [nzRight]="fixedColumn" [nzAlign]="'center'">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of dynamicTable.data">
+        <tr>
+          <td [nzLeft]="fixedColumn" [nzAlign]="'center'">{{ data.payer }}</td>
+          <td [nzAlign]="'center'">{{ data.reciever }}</td>
+          <td [nzAlign]="'center'">{{ data.item }}</td>
+          <td [nzAlign]="'center'">{{ data.amount }}</td>
+          <td [nzAlign]="'center'">{{ data.status }}</td>
+          <td [nzAlign]="'center'">{{ data.certificated }}</td>
+          <td [nzRight]="fixedColumn" [nzEllipsis]="settingValue.ellipsis" [nzAlign]="'center'">
+            <span class="pay" (click)="settle(data.id)" *ngIf="data.status=='未结算'">支付结算</span>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</nz-spin>
