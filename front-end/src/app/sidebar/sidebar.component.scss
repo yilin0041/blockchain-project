@@ -71,11 +71,8 @@ nz-header {
 }
 
 .account {
-  width: 150px;
   float: right;
-  img {
-    vertical-align: text-bottom;
-  }
+  margin-right: 55px;
   span {
     margin-left: 8px;
     font-size: 16px;
@@ -91,4 +88,8 @@ nz-content {
   padding: 32px;
   background: #fff;
   height: 100%;
+}
+
+.button {
+  border: none;
 }

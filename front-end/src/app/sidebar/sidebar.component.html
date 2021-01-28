@@ -7,7 +7,7 @@
             [(nzCollapsed)]="isCollapsed"
             [nzTrigger]="null">
     <div class="sidebar-logo">
-      <a href="#" target="_blank">
+      <a routerLink="/user">
         <img src="../../assets/logo.png" alt="logo">
         <h1>区块链金融系统</h1>
       </a>
@@ -45,8 +45,13 @@
             ></i>
         </span>
         <div class="account">
-          <img src="../../assets/user.png" height="15%" width="15%" alt="profile">
-          <span>{{ this.username }}</span>
+          <ng-template #contentTemplate>
+            <a routerLink="/">退出登录</a>
+          </ng-template>
+          <button class="button" nz-button [nzPopoverContent]="contentTemplate" nzPopoverPlacement="topCenter" nz-popover>
+            <i nz-icon [nzType]="'user'"></i>
+            <span>{{ this.username }}</span>
+          </button>
         </div>
       </div>
     </nz-header>
