@@ -7,10 +7,9 @@
 - Solidity
 - python
 
-# 项目设计说明
+# 方案设计
 根据提供的供应链场景，基于FISCO-BCOS设计相关的智能合约并详细解释智能合约是如何解决提出的问题。
-## 合约设计与实现
-### 存储设计
+## 存储设计
 定义结构体`receivable`用于记录应收账款详情，结构体`Entity`用于记录节点的基本信息，`receivables_id`为账单的id（自增，相当于账单数），`kernelCompany`记录核心企业address。
 一个从id到应收账款详情的映射`receivables`，一个从地址到储蓄余额的映射`balances`，一个从地址到实体详情的映射`entitys`。
 
@@ -45,7 +44,7 @@ mapping (address => Entity) public entitys;
     
 ```
 
-### 接口设计
+## 接口设计
 - `register`
     * 功能：用于注册地址
     * 所需参数：实体地址，实体名，实体类型
@@ -85,10 +84,10 @@ function settle(uint  r_id) public returns(int256)
 
 function confirm(uint  r_id) public returns(int256)
 ```
-### 接口的具体实现
-#### 功能零：注册登陆
+## 核心功能介绍
+### 功能零：注册登陆
 
-##### 链端实现
+#### 链端实现
 
 将实体地址与详情结构体绑定起来，标记映射中该地址key为已用。为金融机构初始化储蓄余额**1000000**。如果地址已被使用，不能成功注册。
 ```js
@@ -119,7 +118,7 @@ function register(address _entity,string _name,bool _etype) public returns (int2
     return 0;
 }
 ```
-##### 后端实现
+#### 后端实现
 
 - 注册
 
@@ -197,11 +196,11 @@ def register(request):
      return JsonResponse(dic)
   ```
 
-#### 功能一：实现采购商品—签发应收账款交易上链
+### 功能一：实现采购商品—签发应收账款交易上链
 
 输入收款方地址，账款交易的商品和对应金额。记录到应收账款映射中，id自增。只有函数调用的来源地址为核心企业地址时，才能成功签发，且核心企业不能向自己签发应收账款。
 
-##### 链端实现
+#### 链端实现
 
 ```js
 /*
@@ -233,7 +232,7 @@ function create(address _to, string memory _product,uint _amount) public returns
 }
 ```
 
-##### 后端实现
+#### 后端实现
 
 ```python
 def create(request):
@@ -267,11 +266,11 @@ def create(request):
     return JsonResponse(dic)
 ```
 
-#### 功能二：实现应收账款的转让上链
+### 功能二：实现应收账款的转让上链
 
 输入转让接收方地址，账款交易的商品和对应金额。分两种情况，部分转让和全部转让。全部转让直接更新金额足够的应收账款的`to`，`product`属性。部分转让需要拆分应收账款，原单据金额减少，并生成一个新的单据记录到应收账款映射中，id自增。当一个应收账款单据金额不够时，操作可能涉及多个应收账款单据。只有转让金额小于函数调用的来源地址拥有的未结算应收账款金额之和，才能成功转让，且不能转让给自己。
 
-##### 链端实现
+#### 链端实现
 
 ```js
 /*
@@ -362,7 +361,7 @@ function tansfer(address new_to, string memory _product, uint _amount) public re
 }
 ```
 
-##### 后端实现
+#### 后端实现
 
 ```python
 def transfer(request):
@@ -400,11 +399,11 @@ def transfer(request):
 
 
 
-#### 功能三：利用应收账款向银行融资上链，供应链上所有可以利用应收账款单据向银行申请融资
+### 功能三：利用应收账款向银行融资上链，供应链上所有可以利用应收账款单据向银行申请融资
 
 类似转让。输入融资资金接收方地址和对应金额（商品默认为`money`）。分两种情况，部分融资和全部融资。全部融资直接更新金额足够的应收账款的`to`，`product`属性，将应收账款单据转让给银行。部分融资需要拆分应收账款，原单据金额减少，并生成一个新的单据记录到应收账款映射中，id自增。当一个应收账款单据金额不够时，操作可能涉及多个应收账款单据。只有融资金额小于函数调用的来源地址拥有的未结算已认证应收账款金额之和，才能成功融资，且单据转让方只能是企业（`type=false`），接收方只能是银行（`type=true`）。
 
-##### 链端实现
+#### 链端实现
 
 ```js
 /*
@@ -501,7 +500,7 @@ function financing(address new_to, uint _amount) public returns(int256){
 }
 ```
 
-##### 后端实现
+#### 后端实现
 
 ```python
 def financing(request):
@@ -539,11 +538,11 @@ def financing(request):
 
 
 
-#### 功能四：应收账款支付结算上链，应收账款单据到期时核心企业向下游企业支付相应的欠款
+### 功能四：应收账款支付结算上链，应收账款单据到期时核心企业向下游企业支付相应的欠款
 
 输入待结算的的应收账款编号，将对应应收账款的状态`status`属性设为已支付。相应地增减涉及实体的储蓄余额。只有函数调用的来源地址为核心企业地址时，才能进行该操作。
 
-##### 链端实现
+#### 链端实现
 
 ```js
 /*
@@ -564,7 +563,7 @@ function settle(uint  r_id) public returns(int256){
     return 0;
 }
 ```
-##### 后端实现
+#### 后端实现
 
 ```python
 def settle(request):
@@ -590,11 +589,11 @@ def settle(request):
 
 
 
-#### 辅助功能：第三方可信机构（金融机构）确认应收账款真实性
+### 辅助功能：第三方可信机构（金融机构）确认应收账款真实性
 
 输入待确认的应收账款编号，将对应应收账款的`isconfirmed`属性设为true。只有金融机构（类型=true）可以对应收账款进行确认。
 
-##### 链端实现
+#### 链端实现
 
 ```js
 /*
@@ -613,7 +612,7 @@ function confirm(uint  r_id) public returns(int256){
     return 0;
 }
 ```
-##### 后端实现
+#### 后端实现
 
 ```python
 def confirm(request):
@@ -637,7 +636,7 @@ def confirm(request):
     return JsonResponse(dic)
 ```
 
-#### 后端辅助功能：查询账单和用户余额
+### 后端辅助功能：查询账单和用户余额
 
 - 查询账单
 
@@ -698,186 +697,14 @@ def confirm(request):
 
   
 
-# 功能测试文档
+# 功能测试
 
-将智能合约部署至链上（单节点or多节点），并调用相关函数，详细说明上述的四个功能具体是如何实现的。（截图说明调用结果）
+# 界面展示
 
-使用Remix IDE在本地进行智能合约的部署和调用
-
-## 部署
-![](./img/deploy.png)
-![](./img/after_deploy.png)
-
-## 函数调用
-### 实体注册
-注册轮胎公司、轮毂公司、银行实体并存储相关信息
-
-```
-核心企业(宝马):0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
-
-轮胎公司:0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2
-
-轮毂公司:0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db
-
-银行:0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB
-```
-
-![](./img/luntai.png)
-![](./img/lungu.png)
-![](./img/yinhang.png)
-
-### 签发应收账款
-核心企业宝马`0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`向轮胎公司`0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2`采购`轮胎`，签订**1000**万的应收账款单据
-
-![](./img/f_create.png)
-
-查看应收账款数组中对应项
-
-![](./img/f_create_detail.png)
-
-
-### 确认应收账款真实性
-第三方可信金融机构银行`0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`确认以上创建的应收账款的真实性
-![](./img/f_confirm.png)
-
-再次查看应收账款数组中对应项，发现成员变量`isconfirmed`被设为`true`，表示已被确认为真实应收账款
-
-![](./img/f_confirm_detail.png)
-
-### 转让应收账款
-轮胎公司`0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2`从轮毂公司`0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db`购买了一批`轮毂`，但由于租金暂时短缺向轮毂公司签订了**500**万的应收账款单据
-
-![](./img/f_transfer.png)
-
-查看应收账款数组中对应项，发现被拆分应收账款金额减少，并由于拆分应收账款生成了一个新的应收账款单据，新的单据继承了原单据的真实性
-
-![](./img/f_transfer_detail_0.png)
-![](./img/f_transfer_detail_1.png)
-
-### 利用应收账款向银行融资
-轮胎公司`0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2`因为资金短缺需要融资**100**万，这个时候它可以凭借跟某车企签订的应收账款单据向金融机构银行`0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`借款，金融机构认可该车企（核心企业）的还款能力，因此愿意借款给轮胎公司。
-
-首先可以看到轮胎公司融资前的储蓄余额为0
-
-![](./img/f_financing_luntai_balance_before.png)
-
-然后进行融资
-
-![](./img/f_financing_luntai.png)
-
-再次查看轮胎公司融资后储蓄余额为100
-
-![](./img/f_financing_luntai_balance_after.png)
-
-检查应收账款数组，发现轮胎公司持有的应收账款金额减少，并由于拆分应收账款生成了一个新的应收账款单据，融资单据货物为金钱。
-
-![](./img/f_financing_luntai_detail_0.png)
-![](./img/f_financing_luntai_detail_2.png)
-
-
-实现了供应链信任关系向下传递，轮毂公司`0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db`也可以凭借应收账款单据向金融机构银行`0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`借款**500**万。
-
-首先查看轮毂公司融资前的储蓄余额,为0。
-
-![](./img/f_financing_lungu_balance_before.png)
-
-下面进行融资
-
-![](./img/f_financing_lungu.png)
-
->这里两个错误控制
->1. **返回-2 -融资失败，融资金额超过拥有的最大金额（结算了的应收账款单据不能融资，只有认证了的应收账款单据才能融资）**，这里尝试借款`600`万。
->
->![](./img/f_financing_error_1.png)
->
->2. **返回-1 -融资失败，只能是企业向银行融资**，企业向企业融资
->
->![](./img/f_financing_error_2.png)
-
-
-再次查看轮毂公司融资后储蓄余额,为500
-
-![](./img/f_financing_lungu_balance_after.png)
-
-检查应收账款数组，发现原本由轮胎公司持有的应收账款转移到银行名下，这是因为本次融资使用了该应收账款中的所有金额
-
-![](./img/f_financing_lungu_detail_1.png)
-
-### 应收账款支付结算
-
-应收账款单据到期后，核心企业宝马`0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`进行支付结算
-
-结算应收账款0
-
-结算前应收账款状态：
-
-![](./img/settle_0_before.png)
-
-结算前核心企业储蓄余额：
-
-![](./img/settle_baoma_balance_before.png)
-
-结算:
-
-![](./img/f_settle.png)
-
-结算后应收账款状态：
-
-![](./img/settle_0_after.png)
-
-结算后核心企业储蓄余额：
-
-![](./img/settle_baoma_balance_after.png)
-
-
-
-## 界面设计
-
-- 登录
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-030.png)
-<br/>
-
-- 注册
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-031.png)
-<br/>
-
-- 登录后默认进入账号信息页
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-032.png)
-<br/>
-
-- 核心企业账户可查看应付账款
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-033.png)
-> pyaccount 为核心企业账户
-
-<br/>
-
-- 核心企业账户可签发单据
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-034.png)
-<br/>
-
-- 银行账户可查看并验证交易
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-039.png)
-> test4 为银行账户
-
-- 下游企业账户可查看应收账款
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-036.png)
-> test5 为下游企业账户
-
-<br/>
-
-- 下游企业账户可利用应收账款融资
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-037.png)
-<br/>
-
-- 下游企业账户可转让应收账款
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-038.png)
-<br/>
-
-- 当前用户登出，跳转回登录页
-![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-035.png)
-<br/>
-
-
+# 心得体会
+    链端实现【18342048李佳】：
+    本次项目实现了基于区块链的供应链金融平台，该平台连接与服务供应链业务交易各方，增强数据链接和共享，提升供应链各方协同性，提高业务处理效率，确定底层资产交易的真实性，为交易各方提供信任和信用的基石。平台底层基于已有的开源区块链系统FISCO-BCOS，充分利用区块链技术的不可篡改、共识机制、分布存储等技术特点，为企业融资提供信任和信用的技术基础。采用联盟链技术构建供应链参与企业间的全新可信机制，实现了融资前后各项数据的有效监管，合理控制金融风险；去中心化的存储机制，并通过公式协议实现数据同步，解决电子数据容易复制和修改的问题，使数据难以被篡改；编写隐私智能合约，增加数据保护能力，保障供应链业务数据完整性的同时，确保交易双方敏感信息的隐私性；使用统一的数据模型，解决各类供应链金融业务场景下数据不统一的问题，增强整个系统的快速扩展性。
+    首次使用solidity编写智能合约，了解了区块链的底层机制，明白了区块链的去中心化,防篡改,开放性,匿名性以及可追溯性等特点的优越性和结合现实需求落地应用的方式。
 
 # 参考文献
 - 智能合约 https://docs.soliditylang.org/en/v0.4.24/introduction-to-smart-contracts.html
