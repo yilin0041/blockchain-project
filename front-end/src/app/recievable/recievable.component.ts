@@ -211,7 +211,7 @@ export class RecievableComponent implements OnInit {
 
     for (let i = 0; i < id.length; i++) {
       this.payableService.postQuery(id[i]).subscribe(res => {
-        if (res.data[1] == localStorage.getItem('currentUsername').toLowerCase()) {
+        if (res.data[1] == localStorage.getItem('currentUsername')) {
           this.listOfData = [...this.listOfData, {
             payer: res.data[0],
             reciever: res.data[1],
