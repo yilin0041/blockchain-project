@@ -728,12 +728,22 @@ def confirm(request):
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-034.png)
 <br/><br/>
 
-- 银行账户可查看并验证交易
+- 核心企业账户可支付结算
+
+![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-040.png)
+<br/><br/>
+
+- 银行账户可查看链上的所有交易
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-039.png)
 > test4 为银行账户
 
 <br/>
+
+- 银行账户可验证交易的真实性
+  
+![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-041.png)
+<br/><br/>
 
 - 下游企业账户可查看应收账款
 
