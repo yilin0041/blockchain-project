@@ -702,48 +702,58 @@ def confirm(request):
 # 界面展示
 
 - 登录
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-030.png)
 <br/>
 
 - 注册
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-031.png)
 <br/>
 
 - 登录后默认进入账号信息页
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-032.png)
 <br/>
 
 - 核心企业账户可查看应付账款
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-033.png)
 > pyaccount 为核心企业账户
 
 <br/>
 
 - 核心企业账户可签发单据
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-034.png)
 <br/>
 
 - 银行账户可查看并验证交易
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-039.png)
 > test4 为银行账户
 
 <br/>
 
 - 下游企业账户可查看应收账款
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-036.png)
 > test5 为下游企业账户
 
 <br/>
 
 - 下游企业账户可利用应收账款融资
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-037.png)
 <br/>
 
 - 下游企业账户可转让应收账款
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-038.png)
 <br/>
 
 - 当前用户登出，跳转回登录页
+
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-035.png)
 <br/>
 
