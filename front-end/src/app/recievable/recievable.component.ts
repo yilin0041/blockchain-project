@@ -124,6 +124,11 @@ export class RecievableComponent implements OnInit {
       if (res.state == 'success') {
         if (res.data[0] == 0) {
           this.successState = '融资成功!';
+          let new_id = JSON.parse(localStorage.getItem('r_id'));
+          let new_idSet = new Set(new_id);
+          new_idSet.add(res.data[1]);
+          new_id = [...new_idSet];
+          localStorage.setItem('r_id', JSON.stringify(new_id));
           this.createSuccessNotification();
           this.getData();
           this.isFinancingVisible = false;
@@ -160,6 +165,11 @@ export class RecievableComponent implements OnInit {
       if (res.state == 'success') {
         if (res.data[0] == 0) {
           this.successState = '账款转让成功!';
+          let new_id = JSON.parse(localStorage.getItem('r_id'));
+          let new_idSet = new Set(new_id);
+          new_idSet.add(res.data[1]);
+          new_id = [...new_idSet];
+          localStorage.setItem('r_id', JSON.stringify(new_id));
           this.createSuccessNotification();
           this.getData();
           this.isTransferVisible = false;
@@ -201,7 +211,7 @@ export class RecievableComponent implements OnInit {
 
     for (let i = 0; i < id.length; i++) {
       this.payableService.postQuery(id[i]).subscribe(res => {
-        if (res.data[1] == localStorage.getItem('currentAddress').toLowerCase()) {
+        if (res.data[1] == localStorage.getItem('currentUsername').toLowerCase()) {
           this.listOfData = [...this.listOfData, {
             payer: res.data[0],
             reciever: res.data[1],

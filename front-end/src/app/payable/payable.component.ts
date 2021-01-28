@@ -121,11 +121,13 @@ export class PayableComponent implements OnInit {
     this.payableService.postCreate(form.reciever, form.item, form.amount).subscribe(res => {
       if (res.state === 'success') {
         if (res.data[0] == 0) {
-          this.successState = '单据签发成功!';
+          this.successState = '单据签发成功!';let new_id = JSON.parse(localStorage.getItem('r_id'));
+          let new_idSet = new Set(new_id);
+          new_idSet.add(res.data[1]);
+          new_id = [...new_idSet];
+          localStorage.setItem('r_id', JSON.stringify(new_id));
           this.createSuccessNotification();
           this.getData();
-          let new_id = JSON.parse(localStorage.getItem('r_id')).push(res.data[1]);
-          localStorage.setItem('r_id', JSON.stringify(new_id));
           this.isCreateVisible = false;
         }
         else if (res.data[0] == -1) {
@@ -202,7 +204,7 @@ export class PayableComponent implements OnInit {
 
   ngOnInit(): void {
     if (localStorage.getItem('r_id') == null) {
-      localStorage.setItem('r_id', JSON.stringify([1, 2, 3, 4, 5, 6, 7]));
+      localStorage.setItem('r_id', JSON.stringify([15, 16, 17, 18]));
     }
 
     this.isSpinning = true;

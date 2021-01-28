@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
     else if (this.username == 'pyaccount') {
       this.type = "core";
     }
-    else if (this.username == 'test4') {
+    else if (this.username == 'test4' || this.username == 'bankA') {
       this.type = "bank";
     }
     else {
