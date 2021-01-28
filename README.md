@@ -27,3 +27,19 @@ python manage.py runserver 0.0.0.0:8000
 ```
 
 进行部署。
+
+<br/>
+
+## 前端部署
+
+> 请先确保您的运行环境已安装 node.js 、npm 和 Angular。
+
+进入/front-end，首先运行
+```bash
+npm install -g --registry="https://registry.npm.taobao.org"
+```
+完成相关依赖的安装，然后运行
+```bash
+npm run start
+```
+开始编译，提示编译成功后即可通过 ``http://localhost:4200`` 访问。
