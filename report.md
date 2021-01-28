@@ -704,17 +704,17 @@ def confirm(request):
 - 登录
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-030.png)
-<br/>
+<br/><br/>
 
 - 注册
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-031.png)
-<br/>
+<br/><br/>
 
 - 登录后默认进入账号信息页
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-032.png)
-<br/>
+<br/><br/>
 
 - 核心企业账户可查看应付账款
 
@@ -726,7 +726,7 @@ def confirm(request):
 - 核心企业账户可签发单据
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-034.png)
-<br/>
+<br/><br/>
 
 - 银行账户可查看并验证交易
 
@@ -745,17 +745,17 @@ def confirm(request):
 - 下游企业账户可利用应收账款融资
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-037.png)
-<br/>
+<br/><br/>
 
 - 下游企业账户可转让应收账款
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-038.png)
-<br/>
+<br/><br/>
 
 - 当前用户登出，跳转回登录页
 
 ![](https://cdn.jsdelivr.net/gh/sherryjw/StaticResource@master/image/bc-035.png)
-<br/>
+<br/><br/>
 
 # 心得体会
 ## 链端实现【18342048李佳】
