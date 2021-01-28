@@ -18,6 +18,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -72,6 +73,7 @@ registerLocaleData(en);
     NzStatisticModule,
     NzAlertModule,
     NzPopoverModule,
+    NzPopconfirmModule,
 
     FormsModule,
     ReactiveFormsModule,

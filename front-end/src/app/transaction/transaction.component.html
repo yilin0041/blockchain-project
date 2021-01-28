@@ -49,7 +49,7 @@
           <td [nzRight]="fixedColumn" [nzEllipsis]="settingValue.ellipsis" [nzAlign]="'center'">
             <ng-template #indicatorTemplate><i nz-icon nzType="loading"></i></ng-template>
             <nz-spin nzSimple [nzIndicator]="indicatorTemplate" *ngIf="loading"> </nz-spin>
-            <span class="confirm" (click)="confirm(data.id)" *ngIf="data.certificated=='否' && !loading">验证</span>
+            <span class="confirm" (nzOnConfirm)="confirm(data.id)" *ngIf="data.certificated=='否' && !loading" nz-popconfirm nzPopconfirmTitle="确认验证？" nzOkText="OK" nzCancelText="Cancel" >验证</span>
           </td>
         </tr>
       </ng-container>

@@ -85,7 +85,7 @@
           <td [nzAlign]="'center'">{{ data.status }}</td>
           <td [nzAlign]="'center'">{{ data.certificated }}</td>
           <td [nzRight]="fixedColumn" [nzEllipsis]="settingValue.ellipsis" [nzAlign]="'center'">
-            <span class="pay" (click)="settle(data.id)" *ngIf="data.status=='未结算'">支付结算</span>
+            <span class="pay" (nzOnConfirm)="settle(data.id)" *ngIf="data.status=='未结算'" nz-popconfirm nzPopconfirmTitle="确认支付？" nzOkText="OK" nzCancelText="Cancel" >支付结算</span>
           </td>
         </tr>
       </ng-container>
